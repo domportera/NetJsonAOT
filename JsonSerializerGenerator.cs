@@ -104,7 +104,8 @@ public partial class JsonSerializerGenerator : ISourceGenerator
                                    foreach (var item in JsonContexts)
                                    {
                                         var options = new JsonSerializerOptions{
-                                            TypeInfoResolver = item.Value
+                                            TypeInfoResolver = item.Value,
+                                            IncludeFields = true
                                         };
                                        
                                        optionsDict.Add(item.Key, options);

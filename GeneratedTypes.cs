@@ -1,6 +1,6 @@
 ﻿namespace NetJsonAOT.Generators;
 
-public static class GeneratedTypes
+internal static class GeneratedTypes
 {
     public static readonly List<GeneratedTypeInfo> GeneratedTypeInfos = [];
     public readonly record struct GeneratedTypeInfo(string OriginalFullyQualifiedTypeName, string GeneratedTypeName)
