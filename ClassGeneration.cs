@@ -6,7 +6,7 @@ using SF = Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace NetJsonAOT.Generators;
 
-public static class ClassGeneration
+internal static class ClassGeneration
 {
     public static SyntaxTree GenerateJsonSerializable(string fullNamespace, string className, SyntaxKind accessModifier)
     {

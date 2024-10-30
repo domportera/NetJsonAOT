@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace NetJsonAOT.Generators;
 
 //[Generator]
-public class JsonIncrementalGenerator : IIncrementalGenerator
+internal class JsonIncrementalGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {

@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis;
 
 namespace NetJsonAOT.Generators;
 
-public static class ExtensionMethods
+internal static class ExtensionMethods
 {
     public static bool Is<T>(this ISyntaxReceiver? syntaxReceiver, [NotNullWhen(true)] out T? receiver)
         where T : ISyntaxReceiver

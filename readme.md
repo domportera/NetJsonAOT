@@ -4,17 +4,14 @@ This project is a source generator that allows you to easily use System.Text.JSO
 
 This is in very early stages, but is working. Currently, the incremental generator does not work due to the evil things going on in here to make the native JSON source generators run before this one, however build-time source generation does work.
 
-In order to reference this in your project, add the following into your csproj file:
+In order to reference this in your project, find it on [nuget](https://www.nuget.org/packages/domportera.NetJsonAOT/) and add the following tags to your csproj's package reference:
 
 ```xml
 <ItemGroup>
-    <ProjectReference Include="path/to/NetJsonAOT.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+    <PackageReference Include="domportera.NetJsonAOT" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 </ItemGroup>
 
 ```
-
-One of these days I'd like to get this on NuGet, but I'm not sure it's ready for primetime just yet. In the meantime, I recommend adding it to your repo as a submodule.
-
 In order to serialize an AOT class, decorate it with a `System.Serializable` attribute, like this:
 
 ```cs

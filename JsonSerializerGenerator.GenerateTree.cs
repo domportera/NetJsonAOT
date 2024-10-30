@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace NetJsonAOT.Generators;
 
-public partial class JsonSerializerGenerator
+internal partial class JsonSerializerGenerator
 {
     // This is a modified version of the output of https://roslynquoter.azurewebsites.net/
 

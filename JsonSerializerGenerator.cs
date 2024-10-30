@@ -6,7 +6,7 @@ using SyntaxReceiver = NetJsonAOT.Generators.SyntaxReceiverByAttribute
 namespace NetJsonAOT.Generators;
 
 [Generator]
-public partial class JsonSerializerGenerator : ISourceGenerator
+internal partial class JsonSerializerGenerator : ISourceGenerator
 {
     public void Initialize(GeneratorInitializationContext context)
     {
