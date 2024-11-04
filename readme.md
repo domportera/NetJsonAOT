@@ -1,5 +1,5 @@
 # .NET JSON AOT
-[![NuGet](https://img.shields.io/nuget/v/domportera.NetJsonAOT.svg)]([https://www.nuget.org/packages/domportera.CLIAlly/](https://www.nuget.org/packages/domportera.NetJsonAOT/))
+[![NuGet](https://img.shields.io/nuget/v/domportera.NetJsonAOT.svg)](https://www.nuget.org/packages/domportera.NetJsonAOT/)
 
 This project is a source generator that allows you to easily use System.Text.JSON in your AOT projects.
 
