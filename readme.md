@@ -28,7 +28,13 @@ The source generator will seek out types tagged as Serializable to generate the 
 This also creates a static NetJsonAOT class for your convenience.
 
 ```cs
+
+
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using NetJsonAOT; // this is actually a reference to a namespace generated within your project - every project has its own internal NetJsonAot class
+
+namespace ExampleSerialization;
 
 void SomeMethod()
 {
@@ -43,42 +49,57 @@ void SomeMethod()
     var options = RuntimeJson.JsonSerializerOptions;
 }
 
-// example deserialization - serialization should be very similar
-bool Deserialize<T>(string json, [NotNullWhen(true)] out T? result, [NotNullWhen(false)] out string? reason)
+
+internal static class Serialization
 {
-
-    var gotOption = RuntimeJson.JsonSerializerOptions.TryGetValue(type, out var options);
-
-    if(!gotOptions)
+    [UnconditionalSuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.", Justification = "<Pending>")]
+    [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "<Pending>")]
+    public static bool TryDeserialize<T>(string json, [NotNullWhen(true)] out T? result, [NotNullWhen(false)] out string? reason)
     {
-        Console.WriteLine("Woah there, this might not work with aot....");
-        // return false;
-    }
-
-    try
-    {
-        value = JsonSerializer.Deserialize(s, type, options);
-
-        if (value == null)
+        // this is a dictionary of your type (key) to instances of JsonSerializerOptions, ready to be used in actual serialization & deserialization
+        if(!RuntimeJson.JsonSerializerOptions.TryGetValue(typeof(T), out var options))
         {
-            reason = $"Could not convert {s} to {type.Name}";
+            result = default;
+            reason  = $"Could not find JsonSerializerOptions for {typeof(T).Name}";
             return false;
         }
 
-        reason = null;
-        return true;
+        try
+        {
+            result = JsonSerializer.Deserialize<T>(json, options);
+
+            if (result == null)
+            {
+                reason = $"Could not convert {json} to {nameof(T)}";
+                return false;
+            }
+
+            reason = null;
+            return true;
+        }
+        catch (JsonException e)
+        {
+            result = default;
+            reason = $"Could not convert json to {nameof(T)} - exception thrown: {e.Message}.\n'{json}'";
+            return false;
+        }
+        catch (Exception e)
+        {
+            result = default;
+            reason = $"Unexpected exception thrown: {e.Message}.\n'{json}'";
+            return false;
+        }
     }
-    catch (JsonException e)
+
+    [UnconditionalSuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "<Pending>")]
+    [UnconditionalSuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.", Justification = "<Pending>")]
+    public static string Serialize<T>(T config)
     {
-        value = default!;
-        reason = $"Could not convert json to {type.Name} - exception thrown: {e.Message}.\n'{s}'";
-        return false;
-    }
-    catch (Exception e)
-    {
-        value = default!;
-        reason = $"Unexpected exception thrown: {e.Message}.\n'{s}'";
-        return false;
+        // this is a dictionary of your type (key) to instances of JsonSerializerOptions, ready to be used in actual serialization & deserialization
+        if(!RuntimeJson.JsonSerializerOptions.TryGetValue(typeof(T), out var options))
+            throw new InvalidOperationException($"Could not find JsonSerializerOptions for {nameof(T)}");
+
+        return JsonSerializer.Serialize(config, options);
     }
 }
 ```
