@@ -32,7 +32,7 @@ This also creates a static NetJsonAOT class for your convenience.
 
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
-using NetJsonAOT; // this is actually a reference to a namespace generated within your project - every project has its own internal NetJsonAot class
+using NetJsonAOT; // this is actually a reference to a namespace generated within your project - every project has its own internal NetJsonAot namespace which provdes the RuntimeJson static class
 
 namespace ExampleSerialization;
 
