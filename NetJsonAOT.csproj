@@ -10,7 +10,7 @@
         
         <!-- Package information -->
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>0.1.3-alpha</Version>
+        <Version>0.1.4-alpha</Version>
         <Title>NetJsonAOT</Title>
         <Authors>Dom Portera</Authors>
         <Description>A source generator for easy use of System.Text.Json in AOT applications</Description>

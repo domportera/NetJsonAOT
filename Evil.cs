@@ -78,11 +78,19 @@ internal static class Evil
             jsonGenerator = null;
             return false;
         }
+        
+        if (textJsonForbiddenImporterType == null)
+        {
+            Console.Error.WriteLine($"Unable to find {sourceGeneratorFullTypeName} generator type");
+            jsonGenerator = null;
+            return false;
+        }
 
         // See declaration of type at
         // https://github.com/dotnet/runtime/blob/c5bead63f8386f716b8ddd909c93086b3546efed/src/libraries/System.Text.Json/gen/JsonSourceGenerator.Roslyn4.0.cs
-        jsonGenerator = ((IIncrementalGenerator)Activator.CreateInstance(textJsonForbiddenImporterType))
+        jsonGenerator = (Activator.CreateInstance(textJsonForbiddenImporterType) as IIncrementalGenerator)?
             .AsSourceGenerator();
-        return true;
+        
+        return jsonGenerator != null;
     }
 }

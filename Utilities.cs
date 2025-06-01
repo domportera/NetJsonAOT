@@ -19,38 +19,22 @@ public static class Utilities
         [NotNullWhen(true)] out string? namespaceString)
     {
         var nsp = symbol.ContainingNamespace;
-
-        if (nsp == null || nsp.IsGlobalNamespace)
+        
+        while(nsp is {IsGlobalNamespace: false})
         {
-            Console.Error.WriteLine(
-                $"Namespace not found for {symbol.Name}");
+            namespaces.Add(nsp);
+            nsp = nsp.ContainingNamespace;
+        }
+
+        if (namespaces.Count == 0)
+        {
             namespaceString = null;
             return false;
         }
 
-        var nspString = nsp.ToString();
-
-        while (true)
-        {
-            namespaces.Add(nsp);
-            var newNsp = nsp.ContainingNamespace;
-            if (newNsp == null)
-                break;
-
-            if (newNsp.IsGlobalNamespace)
-                break;
-
-            var newNspString = newNsp.ToString();
-            if (nspString == newNspString)
-                break;
-
-            nsp = newNsp;
-            nspString = newNspString;
-        }
-
         for (int i = namespaces.Count - 1; i >= 0; i--)
         {
-            sb.Append(namespaces[i]).Append('.');
+            sb.Append(namespaces[i].Name).Append('.');
             namespaces.RemoveAt(i);
         }
 
